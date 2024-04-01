@@ -115,6 +115,10 @@ public class MovingPlatform : MonoBehaviour
         soundFX.PlayAudio(true);
 
         // rotate
+        if (activateRotation)
+        {
+            rotatePlatform.ActivateRotation();
+        }
     }
 
     public void ActivateMoveToInitial()
@@ -137,6 +141,19 @@ public class MovingPlatform : MonoBehaviour
 
                     smoothMovementHalfed = true;
                 }
+            }
+
+            if (Vector3.Distance(transform.position, startPosition) == 0f)
+            {
+                move_To_Initial = false;
+
+                if (smoothMovementHalfed)
+                {
+                    smoothMovementHalfed = false;
+                    smoothMovement = initialMovement;
+                }
+
+                soundFX.PlayAudio(false);
             }
         }
     }

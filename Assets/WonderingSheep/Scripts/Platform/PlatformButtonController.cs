@@ -44,6 +44,11 @@ public class PlatformButtonController : MonoBehaviour
             else
             {
                 movedPlatformsToPoint = false;
+
+                for (int i = 0; i < movingPlatforms.Length; i++)
+                {
+                    movingPlatforms[i].ActivateMoveToInitial();
+                }
             }
         }
     }
