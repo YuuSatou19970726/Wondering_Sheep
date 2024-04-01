@@ -27,14 +27,31 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField]
     private float timer = 1f;
 
+    private DoorController doorController;
+
+    [SerializeField]
+    private bool deactivateDoors;
+
+    private PlatformSoundFX soundFX;
+
+    private RotatingPlatform rotatePlatform;
+
+    [SerializeField]
+    private bool activateRotation;
+
     void Awake()
     {
         startPosition = transform.position;
         initialMovement = smoothMovement;
 
         // activate doors
+        doorController = GetComponent<DoorController>();
 
         // add sound
+        soundFX = GetComponent<PlatformSoundFX>();
+
+        if (activateRotation)
+            rotatePlatform = GetComponent<RotatingPlatform>();
     }
 
     // Start is called before the first frame update
@@ -50,6 +67,7 @@ public class MovingPlatform : MonoBehaviour
     void Update()
     {
         MovePlatform();
+        MoveToInitialPosition();
     }
 
     void MovePlatform()
@@ -78,8 +96,13 @@ public class MovingPlatform : MonoBehaviour
                 }
 
                 // deactivate doors
+                if (deactivateDoors)
+                {
+                    doorController.OpenDoors();
+                }
 
                 // stop playing the sound FX
+                soundFX.PlayAudio(false);
             }
         }
     }
@@ -88,8 +111,33 @@ public class MovingPlatform : MonoBehaviour
     {
         can_Move = true;
 
-        // play dound fx
+        // play sound fx
+        soundFX.PlayAudio(true);
 
         // rotate
+    }
+
+    public void ActivateMoveToInitial()
+    {
+        move_To_Initial = true;
+        soundFX.PlayAudio(true);
+    }
+
+    void MoveToInitialPosition()
+    {
+        if (move_To_Initial)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, startPosition, smoothMovement);
+
+            if (Vector3.Distance(transform.position, startPosition) <= halfDistance)
+            {
+                if (!smoothMovementHalfed)
+                {
+                    smoothMovement /= 2f;
+
+                    smoothMovementHalfed = true;
+                }
+            }
+        }
     }
 }

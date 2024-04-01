@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class Tags
 {
     public const string PLAYER_TAG = "Player";
+    public const string DOOR_TAG = "Door";
+
+    public const string WHITE_COLOR = "White";
+    public const string RED_COLOR = "Red";
 }
 
 public class Axis
